@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Conferencing</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Video Conferencing</h1>
+        <div class="video-container">
+            <video id="localVideo" autoplay muted></video>
+            <video id="remoteVideo" autoplay></video>
+        </div>
+        <div class="controls">
+            <button id="startButton">Start Call</button>
+            <button id="stopButton">Stop Call</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
+css
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+video {
+    max-width: 100%;
+    border: 1px solid #ccc;
+    margin: 10px;
+}
+
+.controls button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+
+javascript
+
+
+
+
+const localVideo = document.getElementById('localVideo');
+const remoteVideo = document.getElementById('remoteVideo');
+const startButton = document.getElementById('startButton');
+const stopButton = document.getElementById('stopButton');
+
+let localStream;
+let peerConnection;
+
+startButton.addEventListener('click', startCall);
+stopButton.addEventListener('click', stopCall);
+
+async function startCall() {
+    try {
+        localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        localVideo.srcObject = localStream;
+
+        // Create a peer connection
+        peerConnection = new RTCPeerConnection();
+
+        // Add the local stream to the peer connection
+        localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+
+        // Set up the remote video
+        peerConnection.ontrack = event => {
+            remoteVideo.srcObject = event.streams[0];
+        };
+
+        // Your signaling code here to establish a connection with the other participant
+
+    } catch (error) {
+        console.error('Error starting the call:', error);
+    }
+}
+
+function stopCall() {
+    // Close the peer connection and release the local stream
+    if (peerConnection) {
+        peerConnection.close();
+    }
+    localStream.getTracks().forEach(track => track.stop());
+
+    // Remove video sources
+    localVideo.srcObject = null;
+    remoteVideo.srcObject = null;
+}
+
+
