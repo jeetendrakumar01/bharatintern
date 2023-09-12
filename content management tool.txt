@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Management Tool</title>
+    <style>
+        /* Basic CSS styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        /* Style for content list */
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+
+        /* Form styling */
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        /* Edit and Delete buttons */
+        .edit-btn,
+        .delete-btn {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Content Management Tool</h1>
+    </header>
+    <div class="container">
+        <h2>Add New Content</h2>
+        <form id="content-form">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" rows="4" required></textarea>
+
+            <input type="submit" value="Add Content">
+        </form>
+
+        <h2>Existing Content</h2>
+        <ul id="content-list">
+            <!-- Content items will be added here -->
+        </ul>
+    </div>
+
+    <script>
+        // JavaScript for adding content to the list
+        const contentForm = document.getElementById('content-form');
+        const contentList = document.getElementById('content-list');
+
+        contentForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                <strong>${title}</strong>
+                <p>${content}</p>
+                <button class="edit-btn">Edit</button>
+                <button class="delete-btn">Delete</button>
+            `;
+
+            contentList.appendChild(listItem);
+
+            // Clear form fields
+            document.getElementById('title').value = '';
+            document.getElementById('content').value = '';
+        });
+
+        // JavaScript for handling edit and delete buttons (not implemented in this example)
+        contentList.addEventListener('click', function (e) {
+            if (e.target.classList.contains('edit-btn')) {
+                // Handle edit functionality
+            } else if (e.target.classList.contains('delete-btn')) {
+                // Handle delete functionality
+                e.target.parentElement.remove();
+            }
+        });
+    </script>
+</body>
+</html>
